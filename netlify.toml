@@ -1,0 +1,53 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Custom domain configuration for subdomain
+[[redirects]]
+  from = "https://oakridge.app/*"
+  to = "https://portal.oakridge.app/:splat"
+  status = 301
+  force = true
+
+# Custom domain configuration
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Handle dashboard and other protected routes
+[[redirects]]
+  from = "/dashboard*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/courses*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/applications*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin*"
+  to = "/index.html"
+  status = 200
+
+[context.production]
+  command = "npm run build"
+
+[context.deploy-preview]
+  command = "npm run build"
